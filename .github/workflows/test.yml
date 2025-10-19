@@ -5,30 +5,40 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
-
-defaults:
-  run:
-    shell: bash
-
-env:
-  PY_VERSION: "3.12"
-  TESTMON_PERSIST_ROOT: "/Users/andreasloizides/tmdata"
-  JOB_ID: "job_0"
-
 jobs:
   test:
     name: "pytest --testmon"
-
+    # Run on your self-hosted mac. Adjust labels if needed.
     runs-on: [ self-hosted, macOS ]
+
+    env:
+      PY_VERSION: "3.12"
+      TESTMON_PERSIST_ROOT: "/Users/andreasloizides/tmdata"
+      JOB_ID: "job_0"
+      # Tool cache & temp dirs for self-hosted runner
+      AGENT_TOOLSDIRECTORY: "/Users/andreasloizides/.cache/hostedtoolcache"
+      RUNNER_TOOL_CACHE: "/Users/andreasloizides/.cache/hostedtoolcache"
+      RUNNER_TEMP: "/Users/andreasloizides/.cache/actions-temp"
+
+    defaults:
+      run:
+        shell: bash
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Create a tiny requirements file so setup-python can key the pip cache properly.
+      - name: Ensure runner caches exist (self-hosted)
+        run: |
+          mkdir -p "$AGENT_TOOLSDIRECTORY" "$RUNNER_TEMP"
+          echo "AGENT_TOOLSDIRECTORY=$AGENT_TOOLSDIRECTORY"
+          echo "RUNNER_TEMP=$RUNNER_TEMP"
+          # Show current user to confirm ownership
+          id -un && ls -ald "$AGENT_TOOLSDIRECTORY" "$RUNNER_TEMP"
+
       - name: Write CI requirements
         run: |
-          printf "pytest\npytest-testmon\ncoverage\n" > requirements-ci.txt
+          printf "pytest\npytest-testmon\n" > requirements-ci.txt
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -37,9 +47,9 @@ jobs:
           cache: "pip"
           cache-dependency-path: "requirements-ci.txt"
 
-      - name: Upgrade pip tooling & install deps (from cache when possible)
+      - name: Install deps
         run: |
-          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install --upgrade pip
           python -m pip install -r requirements-ci.txt
 
       - name: Restore testmon data (if present)
