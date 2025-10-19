@@ -21,8 +21,16 @@ def test_triangle_area():
 
 def test_circle_circumference():
     assert abs(circle_circumference(1) - 2 * math.pi) < 0.0001
+    common()
     assert abs(circle_circumference(5) - 10 * math.pi) < 0.0001
     assert circle_circumference(0) == 0
 
+def common():
+    print("a")
+
 def test_dummy():
+    print("hello")
+    common()
     assert dummy("") == 0
+    assert circle_area(0) == 0
+    assert circle_circumference(0) == 0
