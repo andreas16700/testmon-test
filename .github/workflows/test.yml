@@ -5,9 +5,6 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
-# This workflow is intended for your self-hosted macOS runner.
-# Adjust labels if your runner uses different labels.
-runs-on: [ self-hosted, macOS ]
 
 defaults:
   run:
@@ -21,6 +18,8 @@ env:
 jobs:
   test:
     name: "pytest --testmon"
+
+    runs-on: [ self-hosted, macOS ]
 
     steps:
       - name: Checkout
