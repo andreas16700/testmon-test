@@ -38,7 +38,7 @@ def conditional(should_run):
     if (not should_run):
         # adadf
         return
-    b = 4
+    c = 4
     # afasd
-    v = b*3
+    v = c*3
     return v
