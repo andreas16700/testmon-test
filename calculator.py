@@ -28,3 +28,13 @@ def dummy(a):
     import plotly
     df = pd.DataFrame({'a': [2]})
     return 0
+
+# test comment
+
+
+def conditional(should_run):
+    if (not should_run):
+        return
+    b = 4
+    v = b*8
+    return v
