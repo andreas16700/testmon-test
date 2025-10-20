@@ -18,6 +18,7 @@ def test_capitalize_words2():
     assert capitalize_words("") == ""
 
 def test_should_run():
+    # some comment
     conditional(True)
 
 def test_should_not_run():
