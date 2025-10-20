@@ -40,5 +40,5 @@ def conditional(should_run):
         return
     b = 4
     # afasd
-    v = b*8
+    v = b*3
     return v
