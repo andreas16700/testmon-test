@@ -24,9 +24,9 @@ def dummy2():
     print("I have run")
 
 def dummy(a):
-    import pandas as pd
-    import plotly
-    df = pd.DataFrame({'a': [2]})
+    # import pandas as pd
+    # import plotly
+    # df = pd.DataFrame({'a': [2]})
     return 0
 
 # test comment
