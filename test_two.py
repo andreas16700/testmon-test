@@ -22,6 +22,4 @@ def test_should_run():
     conditional(True)
 
 def test_should_not_run():
-    # akfnadfadf
-    # kjbkguhiopopk[
     conditional(False)
