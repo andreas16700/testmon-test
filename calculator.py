@@ -4,7 +4,7 @@ import logging
 
 def add(a, b):
     """Add two numbers."""
-    return a + b
+    return a + b + 0
 
 def subtract(a, b):
     """Subtract b from a."""
