@@ -16,6 +16,7 @@ jobs:
       TESTMON_SERVER: "https://ezmon.aloiz.ch"
       REPO_ID: ${{ github.repository }}
       JOB_ID: "python-3.12-macos"
+      RUN_ID: ${{ github.run_id }}
 
     defaults:
       run:
@@ -44,10 +45,10 @@ jobs:
       - name: Download testmon data from server
         run: |
           set -euo pipefail
-          echo "📥 Downloading testmon data for ${REPO_ID}/${JOB_ID}..."
+          echo "📥 Downloading testmon data for ${REPO_ID}/${JOB_ID}/${RUN_ID}..."
           
           HTTP_CODE=$(curl -w "%{http_code}" -o .testmondata -f -L \
-            "${TESTMON_SERVER}/api/client/download?repo_id=${REPO_ID}&job_id=${JOB_ID}" \
+            "${TESTMON_SERVER}/api/client/download?repo_id=${REPO_ID}&job_id=${JOB_ID}&run_id=${RUN_ID}" \
             2>/dev/null || echo "000")
           
           if [ "$HTTP_CODE" = "200" ]; then
@@ -81,6 +82,7 @@ jobs:
             -F "file=@.testmondata" \
             -F "repo_id=${REPO_ID}" \
             -F "job_id=${JOB_ID}" \
+            -F "run_id=${RUN_ID}" \
             -F "repo_name=${{ github.repository }}" \
             2>/dev/null || echo "000")
           
