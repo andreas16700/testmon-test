@@ -8,7 +8,7 @@ def circle_area(radius):
     return multiply(math.pi, multiply(radius, radius))
 
 def rectangle_area(width, height):
-    """Calculate the area of a rectangle."""
+    """Calculate to the area of a rectangle."""
     return multiply(width, height) + 0
 
 def triangle_area(base, height):

@@ -1,4 +1,4 @@
-name: Tests (pytest + testmon)
+name: Tests (pytest + ezmon)
 
 on:
   push:
@@ -7,8 +7,7 @@ on:
 
 jobs:
   test:
-    name: "pytest --testmon"
-    # Use GitHub-hosted macOS runner
+    name: "pytest --ezmon (auto sync)"
     runs-on: macos-latest
 
     env:
@@ -18,79 +17,21 @@ jobs:
       JOB_ID: "python-3.12-macos"
       RUN_ID: ${{ github.run_id }}
 
-    defaults:
-      run:
-        shell: bash
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Write CI requirements
-        run: |
-          printf "pytest\npytest-testmon\n" > requirements-ci.txt
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PY_VERSION }}
-          cache: "pip"
-          cache-dependency-path: "requirements-ci.txt"
 
-      - name: Install deps
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -r requirements-ci.txt
+          pip install -r requirements.txt
+          pip install "git+https://github.com/andreas16700/pytest-testmon@main"
 
-      - name: Download testmon data from server
+      - name: Run tests with ezmon (auto sync)
         run: |
-          set -euo pipefail
-          echo "📥 Downloading testmon data for ${REPO_ID}/${JOB_ID}/${RUN_ID}..."
-          
-          HTTP_CODE=$(curl -w "%{http_code}" -o .testmondata -f -L \
-            "${TESTMON_SERVER}/api/client/download?repo_id=${REPO_ID}&job_id=${JOB_ID}&run_id=${RUN_ID}" \
-            2>/dev/null || echo "000")
-          
-          if [ "$HTTP_CODE" = "200" ]; then
-            echo "✅ Downloaded existing testmon data"
-            ls -lh .testmondata
-          elif [ "$HTTP_CODE" = "404" ]; then
-            echo "ℹ️  No existing testmon data found (this is OK for first run)"
-          else
-            echo "⚠️  Failed to download testmon data (HTTP $HTTP_CODE)"
-            echo "   Tests will run without testmon optimization"
-          fi
-
-      - name: Run tests with testmon
-        run: |
-          pytest --testmon -q
-
-      - name: Upload testmon data to server
-        if: always()
-        run: |
-          set -euo pipefail
-          
-          if [ ! -f .testmondata ]; then
-            echo "⚠️  No .testmondata file found to upload"
-            exit 0
-          fi
-          
-          echo "📤 Uploading testmon data to server..."
-          
-          HTTP_CODE=$(curl -w "%{http_code}" -o /tmp/upload_response.json \
-            -X POST "${TESTMON_SERVER}/api/client/upload" \
-            -F "file=@.testmondata" \
-            -F "repo_id=${REPO_ID}" \
-            -F "job_id=${JOB_ID}" \
-            -F "run_id=${RUN_ID}" \
-            -F "repo_name=${{ github.repository }}" \
-            2>/dev/null || echo "000")
-          
-          if [ "$HTTP_CODE" = "200" ]; then
-            echo "✅ Successfully uploaded testmon data"
-            cat /tmp/upload_response.json | python3 -m json.tool 2>/dev/null || cat /tmp/upload_response.json
-          else
-            echo "⚠️  Failed to upload testmon data (HTTP $HTTP_CODE)"
-            cat /tmp/upload_response.json 2>/dev/null || true
-            echo "   This won't affect test results, but next run won't have optimization"
-          fi
+          pytest --ezmon
