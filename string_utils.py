@@ -5,7 +5,7 @@ def reverse_string(s):
     return s[::-1]
 
 def is_palindrome(s):
-    """Check if a string is a palindrome."""
+    """Check if a string is a  qqpalindrome."""
     cleaned = s.lower().replace(" ", "")
     return cleaned == reverse_string(cleaned)
 

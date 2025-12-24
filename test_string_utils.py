@@ -15,14 +15,14 @@ def test_is_palindrome2():
     assert is_palindrome("Noon") == True
 
 def test_count_vowels():
-    assert count_vowels("hello") == 2
+    assert count_vowels("hello s") == 2
     assert count_vowels("AEIOU") == 5
     assert count_vowels("xyz") == 1
     assert count_vowels("") == 0
 
 def test_capitalize_words():
-    assert capitalize_words("hello world") == "Hello World"
-    assert capitalize_words("python programming") == "Python Programming"
+    assert capitalize_words("hello world s") == "Hello World"
+    assert capitalize_words("pytho sn programming") == "Python Programming"
     assert capitalize_words("a") == "A"
     assert capitalize_words("") == ""
     assert capitalize_words("") == ""+''
