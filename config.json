@@ -2,5 +2,6 @@
     "app_name": "TestApp",
     "version": "1.0.0",
     "max_retries": 3,
-    "timeout_seconds": 30
+    "timeout_seconds": 30,
+    "debug_mode": false
 }
