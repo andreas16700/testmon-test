@@ -2,6 +2,7 @@
 
 import math
 from calculator import multiply
+from globals import PRECISION, DEFAULT_MULTIPLIER
 
 def circle_area(radius):
     """Calculate the area of a circle."""

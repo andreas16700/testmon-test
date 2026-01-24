@@ -3,10 +3,11 @@
 import math
 from geometry import circle_area, rectangle_area, triangle_area, circle_circumference
 from calculator import dummy
+from globals import PRECISION
 
 def test_circle_area():
-    assert abs(circle_area(1) - math.pi) < 0.0001
-    assert abs(circle_area(2) - 4 * math.pi) < 0.0001
+    assert abs(circle_area(1) - math.pi) < PRECISION
+    assert abs(circle_area(2) - 4 * math.pi) < PRECISION
     assert circle_area(0) == 0
 
 def test_rectangle_area():
@@ -20,9 +21,9 @@ def test_triangle_area():
     assert triangle_area(8, 3) == 12
 
 def test_circle_circumference():
-    assert abs(circle_circumference(1) - 2 * math.pi) < 0.0001
+    assert abs(circle_circumference(1) - 2 * math.pi) < PRECISION
     common()
-    assert abs(circle_circumference(5) - 10 * math.pi) < 0.0001
+    assert abs(circle_circumference(5) - 10 * math.pi) < PRECISION
     assert circle_circumference(0) == 0
 
 def common():
