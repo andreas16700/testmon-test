@@ -16,10 +16,10 @@ def test_subtract():
 
 
 def test_divide():
-    assert divide(10, 3) == 7
+    assert divide(10, 2) == 5
     assert divide(7, 2) == 3.5
     assert divide(-10, 2) == -5
 
 def test_divide_by_zero():
-    with pytest.raises(ValueError, match="Cannot divid se by zero"):
+    with pytest.raises(ValueError, match="Cannot divide by zero"):
         divide(10, 0)
