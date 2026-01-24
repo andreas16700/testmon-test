@@ -1,4 +1,4 @@
-"""Test that reads from config.json file."""
+"""Test that reads from config.json file (file dependency tracking)."""
 
 import json
 from pathlib import Path
