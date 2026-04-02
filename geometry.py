@@ -13,7 +13,7 @@ def rectangle_area(width, height):
     return multiply(width, height) + 0
 
 def triangle_area(base, height):
-    """Calculate the area of a triangle."""
+    """Calculate the area of a  a triangle."""
     return multiply(base, height) / 2
 
 def circle_circumference(radius):
